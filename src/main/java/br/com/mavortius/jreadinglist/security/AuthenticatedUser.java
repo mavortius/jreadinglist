@@ -1,6 +1,7 @@
 package br.com.mavortius.jreadinglist.security;
 
 import br.com.mavortius.jreadinglist.domain.User;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 
 public class AuthenticatedUser extends org.springframework.security.core.userdetails.User {
@@ -22,5 +23,23 @@ public class AuthenticatedUser extends org.springframework.security.core.userdet
     @Override
     public String toString() {
         return user.getFullname();
+    }
+
+    public boolean hasRole(RoleAuthority authority) {
+        for(GrantedAuthority a : getAuthorities()) {
+            if(a.getAuthority().equals(authority.name())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasAnyRole(RoleAuthority ... authorities) {
+        for(RoleAuthority authority : authorities) {
+            if(hasRole(authority)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

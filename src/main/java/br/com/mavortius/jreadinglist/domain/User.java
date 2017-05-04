@@ -3,7 +3,9 @@ package br.com.mavortius.jreadinglist.domain;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class User implements Serializable {
@@ -21,11 +23,14 @@ public class User implements Serializable {
 
     private Boolean enabled = Boolean.TRUE;
 
+    @Transient
+    private String passwordConfirm;
+
     @ManyToMany
     @JoinTable(name = "user_role",
                 joinColumns = @JoinColumn(name = "user_id"),
                 inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles = new ArrayList<>();
+    private Set<Role> roles = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -59,6 +64,14 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
@@ -67,7 +80,7 @@ public class User implements Serializable {
         return enabled;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
